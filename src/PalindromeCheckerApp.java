@@ -1,46 +1,43 @@
 
-import java.util.Stack;
-import java.util.Queue;
-import java.util.LinkedList;
+
+import java.util.Deque;
+import java.util.ArrayDeque;
 
 public class PalindromeCheckerApp {
 
     /**
-     * Application entry point for UC6.
+     * Application entry point for UC7.
      *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
 
         System.out.println("=====================================");
-        System.out.println("   Palindrome Checker - UC6");
+        System.out.println("   Palindrome Checker - UC7");
         System.out.println("=====================================");
 
         // Hardcoded string
-        String input = "madam";
+        String input = "refer";
 
         System.out.println("Input String: " + input);
 
-        // Create Stack and Queue
-        Stack<Character> stack = new Stack<>();
-        Queue<Character> queue = new LinkedList<>();
+        // Create Deque
+        Deque<Character> deque = new ArrayDeque<>();
 
-        // Insert characters into both data structures
+        // Insert characters into deque (rear)
         for (int i = 0; i < input.length(); i++) {
-            char ch = input.charAt(i);
-            stack.push(ch);     // LIFO
-            queue.add(ch);      // FIFO (enqueue)
+            deque.addLast(input.charAt(i));
         }
 
         boolean isPalindrome = true;
 
-        // Compare dequeue (FIFO) vs pop (LIFO)
-        while (!stack.isEmpty()) {
+        // Compare front and rear elements
+        while (deque.size() > 1) {
 
-            char fromStack = stack.pop();      // LIFO removal
-            char fromQueue = queue.remove();   // FIFO removal (dequeue)
+            char front = deque.removeFirst();
+            char rear = deque.removeLast();
 
-            if (fromStack != fromQueue) {
+            if (front != rear) {
                 isPalindrome = false;
                 break;
             }
