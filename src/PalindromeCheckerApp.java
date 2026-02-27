@@ -1,38 +1,47 @@
 
+
 public class PalindromeCheckerApp {
 
     /**
-     * Application entry point for UC3.
+     * Application entry point for UC4.
      *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
 
-        System.out.println("Palindrome Checker - UC3");
-
+        System.out.println("Palindrome Checker - UC4");
 
         // Hardcoded string
-        String original = "racecar";
+        String input = "level";
 
-        System.out.println("Original String: " + original);
+        System.out.println("Input String: " + input);
 
-        // String to store reversed value
-        String reversed = "";
+        // Convert string to character array
+        char[] characters = input.toCharArray();
 
-        // Reverse string using for loop
-        for (int i = original.length() - 1; i >= 0; i--) {
-            reversed = reversed + original.charAt(i);
+        boolean isPalindrome = true;
+
+        // Two-pointer approach
+        int start = 0;
+        int end = characters.length - 1;
+
+        while (start < end) {
+
+            if (characters[start] != characters[end]) {
+                isPalindrome = false;
+                break;
+            }
+
+            start++;
+            end--;
         }
 
-        System.out.println("Reversed String: " + reversed);
-
-        // Compare using equals() method
-        if (original.equals(reversed)) {
-            System.out.println(original + " is a Palindrome.");
+        // Display result
+        if (isPalindrome) {
+            System.out.println(input + " is a Palindrome.");
         } else {
-            System.out.println(original + " is NOT a Palindrome.");
+            System.out.println(input + " is NOT a Palindrome.");
         }
-
 
         System.out.println("Program Ended.");
     }
