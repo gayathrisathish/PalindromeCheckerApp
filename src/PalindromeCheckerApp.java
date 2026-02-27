@@ -1,39 +1,41 @@
 
+import java.util.Stack;
 
 public class PalindromeCheckerApp {
 
     /**
-     * Application entry point for UC4.
+     * Application entry point for UC5.
      *
      * @param args Command-line arguments
      */
     public static void main(String[] args) {
 
-        System.out.println("Palindrome Checker - UC4");
+
+        System.out.println("Palindrome Checker - UC5");
 
         // Hardcoded string
-        String input = "level";
+        String input = "radar";
 
         System.out.println("Input String: " + input);
 
-        // Convert string to character array
-        char[] characters = input.toCharArray();
+        // Create Stack
+        Stack<Character> stack = new Stack<>();
+
+        // Push characters into stack
+        for (int i = 0; i < input.length(); i++) {
+            stack.push(input.charAt(i));
+        }
 
         boolean isPalindrome = true;
 
-        // Two-pointer approach
-        int start = 0;
-        int end = characters.length - 1;
+        // Pop and compare
+        for (int i = 0; i < input.length(); i++) {
+            char poppedChar = stack.pop();
 
-        while (start < end) {
-
-            if (characters[start] != characters[end]) {
+            if (input.charAt(i) != poppedChar) {
                 isPalindrome = false;
                 break;
             }
-
-            start++;
-            end--;
         }
 
         // Display result
