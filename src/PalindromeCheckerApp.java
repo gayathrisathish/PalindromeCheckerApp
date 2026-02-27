@@ -1,47 +1,30 @@
-/**
- * =========================================================
- * MAIN CLASS – UseCase11PalindromeCheckerApp
- * =========================================================
- *
- * Use Case 11: Object-Oriented Palindrome Service
- *
- * Description:
- * This class demonstrates encapsulation by providing
- * a reusable PalindromeChecker service class.
- *
- * Steps:
- * - Create PalindromeChecker class
- * - Expose checkPalindrome() method
- * - Use in main application
- *
- * Demonstrates OOP principles and clean separation of concerns.
- *
- * @author Developer
- * @version 11.0
- */
+
+
+import java.util.Deque;
+import java.util.ArrayDeque;
+import java.util.Stack;
 
 public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
         System.out.println("=====================================");
-        System.out.println("   Palindrome Checker - UC11");
+        System.out.println("   Palindrome Checker - UC12 (Strategy Pattern)");
         System.out.println("=====================================");
 
-        String input = "Deified";
-
+        String input = "racecar";
         System.out.println("Input String: " + input);
 
-        // Create instance of PalindromeChecker service
-        PalindromeChecker checker = new PalindromeChecker();
+        // Strategy injection: choose algorithm
+        PalindromeStrategy strategy;
 
-        boolean result = checker.checkPalindrome(input);
+        // Example: choose Stack strategy
+        strategy = new StackStrategy();
+        System.out.println("Using Stack Strategy: " + (strategy.isPalindrome(input) ? "Palindrome" : "NOT Palindrome"));
 
-        if (result) {
-            System.out.println("\"" + input + "\" is a Palindrome.");
-        } else {
-            System.out.println("\"" + input + "\" is NOT a Palindrome.");
-        }
+        // Example: choose Deque strategy
+        strategy = new DequeStrategy();
+        System.out.println("Using Deque Strategy: " + (strategy.isPalindrome(input) ? "Palindrome" : "NOT Palindrome"));
 
         System.out.println("=====================================");
         System.out.println("Program Ended.");
@@ -49,37 +32,54 @@ public class PalindromeCheckerApp {
 }
 
 /**
- * PalindromeChecker Service Class
- *
- * Encapsulates palindrome validation logic.
+ * Strategy interface for palindrome checking
  */
-class PalindromeChecker {
+interface PalindromeStrategy {
+    boolean isPalindrome(String input);
+}
 
-    /**
-     * Checks if the input string is a palindrome.
-     * Ignores case and spaces.
-     *
-     * @param input The string to check
-     * @return true if palindrome, false otherwise
-     */
-    public boolean checkPalindrome(String input) {
+/**
+ * Stack-based palindrome strategy
+ */
+class StackStrategy implements PalindromeStrategy {
 
-        if (input == null || input.isEmpty()) {
-            return false;
+    @Override
+    public boolean isPalindrome(String input) {
+        if (input == null || input.isEmpty()) return false;
+
+        String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        Stack<Character> stack = new Stack<>();
+
+        for (char ch : normalized.toCharArray()) {
+            stack.push(ch);
         }
 
-        // Normalize string: remove spaces and convert to lowercase
+        for (char ch : normalized.toCharArray()) {
+            if (stack.pop() != ch) return false;
+        }
+
+        return true;
+    }
+}
+
+/**
+ * Deque-based palindrome strategy
+ */
+class DequeStrategy implements PalindromeStrategy {
+
+    @Override
+    public boolean isPalindrome(String input) {
+        if (input == null || input.isEmpty()) return false;
+
         String normalized = input.replaceAll("\\s+", "").toLowerCase();
+        Deque<Character> deque = new ArrayDeque<>();
 
-        int start = 0;
-        int end = normalized.length() - 1;
+        for (char ch : normalized.toCharArray()) {
+            deque.addLast(ch);
+        }
 
-        while (start < end) {
-            if (normalized.charAt(start) != normalized.charAt(end)) {
-                return false;
-            }
-            start++;
-            end--;
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) return false;
         }
 
         return true;
